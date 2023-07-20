@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.fakhrirasyids.picdf.ui.navigation.Screen
+import com.fakhrirasyids.picdf.ui.screen.addedit.AddEditScreen
 import com.fakhrirasyids.picdf.ui.screen.home.HomeScreen
 import com.fakhrirasyids.picdf.ui.screen.splash.SplashScreen
 import com.fakhrirasyids.picdf.ui.screen.starter.StarterScreen
@@ -38,7 +39,7 @@ fun PicDFApp(
             if (currentRoute == Screen.Home.route) {
                 FloatingActionButton(
                     containerColor = primaryBlue,
-                    onClick = { },
+                    onClick = { navController.navigate(Screen.AddEdit.route) },
                     content = {
                         Icon(
                             imageVector = Icons.Default.Add,
@@ -53,13 +54,22 @@ fun PicDFApp(
         NavHost(navController = navController, startDestination = Screen.Splash.route) {
             composable(route = Screen.Splash.route) {
                 toggleStatusBar(isTransparent = false)
-                SplashScreen(navigateToStarter = {
-                    navController.navigate(Screen.Starter.route) {
-                        popUpTo(Screen.Splash.route) {
-                            inclusive = true
+                SplashScreen(
+                    navigateToHome = {
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(Screen.Splash.route) {
+                                inclusive = true
+                            }
                         }
-                    }
-                })
+                    },
+                    navigateToStarter = {
+                        navController.navigate(Screen.Starter.route) {
+                            popUpTo(Screen.Splash.route) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                )
             }
 
             composable(route = Screen.Starter.route) {
@@ -76,6 +86,11 @@ fun PicDFApp(
             composable(route = Screen.Home.route) {
                 toggleStatusBar(isTransparent = true)
                 HomeScreen()
+            }
+
+            composable(route = Screen.AddEdit.route) {
+                toggleStatusBar(isTransparent = false)
+                AddEditScreen(navigateBack = { navController.popBackStack() })
             }
         }
     }

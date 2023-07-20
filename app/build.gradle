@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.fakhrirasyids.picdf'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.fakhrirasyids.picdf"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -48,6 +48,17 @@ android {
 
 dependencies {
 
+    // Image picker, and folder picker
+    implementation 'com.zhihu.android:matisse:0.5.3-beta3'
+    implementation 'lib.kashif:folderpicker:2.4'
+
+    // Compose Custom Dialog
+    implementation 'com.github.farhanroy:compose-awesome-dialog:1.0.1'
+
+    // Datastore
+    implementation 'androidx.preference:preference:1.2.0'
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
     // Accompanist
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.0"
 
@@ -69,6 +80,7 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
     implementation 'androidx.activity:activity-compose:1.7.2'
+    implementation 'androidx.core:core-ktx:+'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

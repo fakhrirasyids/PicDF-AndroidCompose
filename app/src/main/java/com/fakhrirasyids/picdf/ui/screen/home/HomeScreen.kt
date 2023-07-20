@@ -1,6 +1,9 @@
 package com.fakhrirasyids.picdf.ui.screen.home
 
+import android.Manifest
 import android.annotation.SuppressLint
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -30,28 +33,55 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fakhrirasyids.picdf.R
+import com.fakhrirasyids.picdf.ui.components.CustomDialog
 import com.fakhrirasyids.picdf.ui.components.CustomSearchBar
 import com.fakhrirasyids.picdf.ui.theme.primaryBlue
+import com.fakhrirasyids.picdf.utils.PermissionUtils.checkAndRequestPermission
+import io.github.farhanroy.composeawesomedialog.utils.ComposeAwesomeDialogType
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = koinViewModel()
+    homeViewModel: HomeViewModel = koinViewModel()
 ) {
+    val context = LocalContext.current
+    val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+
+    val checkStoragePermission = remember { mutableStateOf(true) }
+    checkStoragePermission.value = checkAndRequestPermission(context, permission)
+
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        checkStoragePermission.value = isGranted
+    }
+
+    if (!checkStoragePermission.value) {
+        CustomDialog(
+            type = ComposeAwesomeDialogType.Info,
+            title = "Storage Permission",
+            desc = "Allow app to access files on your device",
+            onDismiss = {},
+            onOkClick = { launcher.launch(permission) },
+            onCancelClick = {},
+            showCancelButton = false
+        )
+    }
 
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
     ) {
-        HeaderContent(modifier = modifier, viewModel = viewModel)
+        HeaderContent(modifier = modifier, viewModel = homeViewModel)
     }
 }
 

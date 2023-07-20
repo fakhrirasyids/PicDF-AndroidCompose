@@ -11,7 +11,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,13 +22,17 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.fakhrirasyids.picdf.ui.theme.Purple40
 import com.fakhrirasyids.picdf.ui.theme.primaryBlue
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.fakhrirasyids.picdf.utils.UiState
 import kotlinx.coroutines.delay
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SplashScreen(navigateToStarter: () -> Unit) {
+fun SplashScreen(
+    navigateToHome: () -> Unit,
+    navigateToStarter: () -> Unit,
+    splashViewModel: SplashViewModel = koinViewModel()
+) {
     var startAnimation by remember {
         mutableStateOf(false)
     }
@@ -41,7 +45,11 @@ fun SplashScreen(navigateToStarter: () -> Unit) {
     LaunchedEffect(key1 = true) {
         startAnimation = true
         delay(1500)
-        navigateToStarter()
+        if (splashViewModel.isStarterShown.value) {
+            navigateToHome()
+        } else {
+            navigateToStarter()
+        }
     }
 
     Splash(alphaAnim.value)
@@ -56,7 +64,9 @@ fun Splash(alpha: Float) {
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            modifier = Modifier.size(120.dp).alpha(alpha = alpha),
+            modifier = Modifier
+                .size(120.dp)
+                .alpha(alpha = alpha),
             imageVector = Icons.Default.Email,
             contentDescription = "PicDF Logo",
             tint = Color.White
