@@ -12,8 +12,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class HomeViewModel() : ViewModel() {
-
-
     private val _query = mutableStateOf("")
     val query: State<String> get() = _query
 
@@ -27,5 +25,4 @@ class HomeViewModel() : ViewModel() {
 //                }
         }
     }
-
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.fakhrirasyids.picdf.ui.screen.addedit.AddEditViewModel
 import com.fakhrirasyids.picdf.ui.screen.home.HomeViewModel
 import com.fakhrirasyids.picdf.ui.screen.splash.SplashViewModel
 import com.fakhrirasyids.picdf.utils.Constants
@@ -22,5 +23,6 @@ val preferencesModule = module {
 
 val viewModelModule = module {
     viewModel { HomeViewModel() }
+    viewModel { AddEditViewModel() }
     viewModel { SplashViewModel(get()) }
 }

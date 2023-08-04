@@ -55,16 +55,16 @@ fun HomeScreen(
     val context = LocalContext.current
     val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
 
-    val checkStoragePermission = remember { mutableStateOf(true) }
+    val checkStoragePermission = remember { mutableStateOf(1) }
     checkStoragePermission.value = checkAndRequestPermission(context, permission)
 
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
-        checkStoragePermission.value = isGranted
+        checkStoragePermission.value = 1
     }
 
-    if (!checkStoragePermission.value) {
+    if (checkStoragePermission.value == 0) {
         CustomDialog(
             type = ComposeAwesomeDialogType.Info,
             title = "Storage Permission",
